@@ -16,7 +16,7 @@ def DCP_2(L):
     for i,p in enumerate(L):
         #DEBUG: test that the right indexes will be excluded from the product
         #print([j for j,q in enumerate(L) if j != i])
-        #calculate the product
+        #calculate the product. remember to use indexes for item exclusion so that duplicate values are retained in other index positions
         P.append(np.product([q for j,q in enumerate(L) if j != i]))
     return P
 
