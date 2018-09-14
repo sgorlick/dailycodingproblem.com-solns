@@ -13,11 +13,16 @@
 
 #soln
 import numpy as np
+import timeit
+
 
 #input is a list of integers
 def DPC_4(I):
     #remove non positive values
     S = sorted([i for i in I if i > 0])
+    #if 1 not in list, return 1
+    if S[0] != 1:
+        return 1
     #eval space between values
     D = list(np.diff(S))
     #if no positives, return 1
@@ -59,5 +64,41 @@ I=[0]
 DPC_4(I)
 #1
 
+#test random string of ints 
+I=np.random.randint(low=-10,high=10, size=10)
+print(I)
+DPC_4(I)
 
-#soln time incl notes,comments: 25min
+
+#test linear time performance
+def wrapper(func, *args, **kwargs):
+    def wrapped():
+        return func(*args, **kwargs)
+    return wrapped
+#10 iters
+I=np.random.randint(low=-10,high=10, size=10)
+wrapped = wrapper(DPC_4, I)
+timeit.timeit(wrapped, number=10000)
+#0.1026542482261732
+
+#100 iters
+I=np.random.randint(low=-100,high=100, size=100)
+wrapped = wrapper(DPC_4, I)
+timeit.timeit(wrapped, number=10000)
+#1.0872683088967392
+
+#1000 iters
+I=np.random.randint(low=-1000,high=1000, size=1000)
+wrapped = wrapper(DPC_4, I)
+timeit.timeit(wrapped, number=10000)
+#7.861962749415568
+
+#10000 iters
+I=np.random.randint(low=-10000,high=10000, size=10000)
+wrapped = wrapper(DPC_4, I)
+timeit.timeit(wrapped, number=10000)
+#60.52168661096425
+
+#looks to be better than O(n) time complexity,possibly due to the high likelyhood of the simple case where 1 is NOT in the list having O(log(n)) complexity (Quicksort).
+
+#soln time incl notes,comments: 35min
